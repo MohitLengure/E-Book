@@ -39,7 +39,7 @@ fun BookbyCategory(viewModel: AppViewModel = hiltViewModel(), navController: Nav
             LazyColumn {
               items(data)
               {
-                  books(title = it.bookName, url = it.bookUrl, bookImage =it.bookImage , author =it.bookAuthor )
+                  books(title = it.bookName, url = it.bookUrl, bookImage =it.bookImage , author =it.bookAuthor, bookid = it.bookId )
               }
               }
         }

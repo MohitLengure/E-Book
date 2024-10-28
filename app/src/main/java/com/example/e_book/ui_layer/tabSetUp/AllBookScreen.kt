@@ -40,6 +40,7 @@ fun AllBooksScreen(viewModel: AppViewModel = hiltViewModel(), navController: Nav
     val state = viewModel.getAllBooksState.collectAsState()
     val data = state.value.data ?: emptyList()
 
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getAllBooks()
     }
@@ -63,12 +64,13 @@ fun AllBooksScreen(viewModel: AppViewModel = hiltViewModel(), navController: Nav
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(data) {
                         books(
+                            bookid=it.bookId,
                             title = it.bookName,
                             url = it.bookUrl,
                             bookImage = it.bookImage,
                             author = it.bookAuthor,
                             onItemClicked ={
-                                navController.navigate(routes.pdfView(it.bookUrl))
+                                navController.navigate(routes.pdfView(it.bookUrl,it.bookName,it.bookId))
                             }
                         )
                     }
@@ -81,6 +83,7 @@ fun AllBooksScreen(viewModel: AppViewModel = hiltViewModel(), navController: Nav
 
 @Composable
 fun books(
+    bookid:String,
     title: String,
     url: String,
     bookImage: String,

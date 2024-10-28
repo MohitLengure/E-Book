@@ -104,4 +104,37 @@ class Repo @Inject constructor(private val firebaseDatabase: FirebaseDatabase) {
 
 
     }
+
+
+
+    suspend fun getBooksbyId(bookId: String): Flow<ResultState<List<BookModels>>> = callbackFlow {
+
+        trySend(ResultState.Loading)
+
+        val valueEvent = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var items: List<BookModels> = emptyList()
+                items  = snapshot.children.filter {
+                    it.getValue<BookModels>()!!.bookId == bookId
+                }.map {
+                    it.getValue<BookModels>()!!
+
+                }
+                trySend(ResultState.Success(items))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                trySend(ResultState.Error(error.toException()))
+            }
+
+
+        }
+
+        firebaseDatabase.reference.child("Books").addValueEventListener(valueEvent)
+        awaitClose {
+            firebaseDatabase.reference.child("Books").removeEventListener(valueEvent)
+        }
+
+
+    }
 }

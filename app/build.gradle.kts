@@ -103,7 +103,7 @@ dependencies {
 
     implementation ("io.github.grizzi91:bouquet:1.1.2")
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
-
+    implementation( "com.google.accompanist:accompanist-swiperefresh:0.28.0")
 
 
 }

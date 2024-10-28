@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.example.e_book.Navigation.myapp
 import com.example.e_book.ui.theme.EBookTheme
+import com.example.e_book.user_praf.UserPreferncesManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,9 +26,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val userPreferncesManager = UserPreferncesManager(this)
         setContent {
             EBookTheme {
-                Scaffold(
+                /* Scaffold(
                     topBar = {
                         TopAppBar(
                             colors = TopAppBarDefaults.topAppBarColors(
@@ -46,19 +48,21 @@ class MainActivity : ComponentActivity() {
                         myapp()
                     }
                 }
-            }
+            }*/
 
 
-                /*Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)) {
-                        myapp()
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
+                        myapp(userPreferncesManager)
                     }
 
-                }*/
+                }
             }
         }
     }
 
-
+}

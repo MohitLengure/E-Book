@@ -96,6 +96,33 @@ class AppViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
 
     }
 
+    private val _getBooksByID = MutableStateFlow(GetBoooksByID())
+    val getBooksByID = _getBooksByID.asStateFlow()
+
+    fun getBooksbyId(Bookid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getBooksbyId(Bookid).collect {
+                when (it) {
+                    is ResultState.Loading -> {
+                        _getBooksByID.value = GetBoooksByID(isLoading = true)
+                    }
+
+                    is ResultState.Success -> {
+                        _getBooksByID.value =
+                            GetBoooksByID(isLoading = false, data = it.data)
+                    }
+
+                    is ResultState.Error -> {
+                        _getBooksByID.value =
+                            GetBoooksByID(isLoading = false, error = it.exception)
+                    }
+                }
+            }
+
+        }
+
+    }
+
 
 }
 
@@ -112,6 +139,12 @@ data class GetAllCategoryState(
 
 )
 data class GetBoooksByCategoryStat(
+    val isLoading: Boolean = false,
+    val data: List<BookModels> = emptyList(),
+    val error: Throwable? = null
+)
+
+data class GetBoooksByID(
     val isLoading: Boolean = false,
     val data: List<BookModels> = emptyList(),
     val error: Throwable? = null
